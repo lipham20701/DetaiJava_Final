@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -25,15 +26,16 @@ import DAOInformation.DAOChutro;
 import connectDatabase.Database;
 
 public class GUI_TimTroSinhVien extends JFrame implements ActionListener {
-        private JButton btntim,btnxoatrang;
-        private JTextField txtDiachi,txtchunha,txtSDT,txtMa;
+        private JButton btntim,btnxoatrang,btnduyet,btntrolai;
+        private JTextField txtDiachi,txtchunha,txtSDT,txtMa,txttukhoa;
 	private	JLabel lblTitle;
-        private JLabel lbldiachi,lblchunha,lblsdt,lblMa;
+        private JLabel lbldiachi,lblchunha,lblsdt,lblMa,lbltukhoa;
         private JTable table;
         private DefaultTableModel tablemodel;
         DAOChutro dao_chutro = new DAOChutro();
         public GUI_TimTroSinhVien() {
-        	setSize(700,550);
+        	super("TimkiemthongtinTro");
+        	setSize(700,450);
         	setDefaultCloseOperation(EXIT_ON_CLOSE);
         	setLocationRelativeTo(null);
         	setResizable(false);
@@ -51,34 +53,43 @@ public class GUI_TimTroSinhVien extends JFrame implements ActionListener {
         	//
         	JPanel pnCenter= new JPanel();
         	
-        	JPanel pn1,pn2,pn3,pn0;
+        	JPanel pn1,pn2,pn3,pn0,pnduyet;
+        	pnduyet = new JPanel();
         	pn1=new JPanel();
         	pn2= new JPanel();
         	pn3= new JPanel();
         	pn0=new JPanel();
-        	pn0.add(lblMa=new JLabel("Nhập mã sinh viên"));
-        	pn0.add(txtMa= new JTextField(50));
-        	pnCenter.add(pn0);
-        	pn1.add(lbldiachi=new JLabel("Nhập địa chỉ    "));
-        	pn1.add(txtDiachi=new JTextField(50));
+        	pnduyet.add(lbltukhoa = new JLabel("Tìm kiếm"));
+        	pnduyet.add(txttukhoa = new JTextField(25));
+        	pnduyet.add(btnduyet = new JButton("Duyệt"));
+        	pnCenter.add(pnduyet);
         	
-        	pnCenter.add(pn1);
-        	pn2.add(lblchunha= new JLabel("Nhập chủ nhà   "));
-        	pn2.add(txtchunha= new JTextField(50));
-        	pnCenter.add(pn2);
-        	pn3.add(lblsdt= new JLabel("Nhập số điện thoại"));
-        	pn3.add(txtSDT= new JTextField(50));
-        	pnCenter.add(pn3);
-        	lblchunha.setPreferredSize(lblsdt.getPreferredSize());
-        	lbldiachi.setPreferredSize(lblsdt.getPreferredSize());
-        	lblMa.setPreferredSize(lblsdt.getPreferredSize());
+//        	pn0.add(lblMa=new JLabel("Nhập mã sinh viên"));
+//        	pn0.add(txtMa= new JTextField(50));
+//        	pnCenter.add(pn0);
+////        	pn1.add(lbldiachi=new JLabel("Nhập địa chỉ    "));
+//        	pn1.add(txtDiachi=new JTextField(50));
+//        	
+//        	pnCenter.add(pn1);
+//        	pn2.add(lblchunha= new JLabel("Nhập chủ nhà   "));
+//        	pn2.add(txtchunha= new JTextField(50));
+//        	pnCenter.add(pn2);
+//        	pn3.add(lblsdt= new JLabel("Nhập số điện thoại"));
+//        	pn3.add(txtSDT= new JTextField(50));
+//        	pnCenter.add(pn3);
+//        	lblchunha.setPreferredSize(lblsdt.getPreferredSize());
+//        	lbldiachi.setPreferredSize(lblsdt.getPreferredSize());
+        	//lblMa.setPreferredSize(lblsdt.getPreferredSize());
+        	//lbltukhoa.setPreferredSize(lblMa.getPreferredSize());
         	JPanel pnButton= new JPanel();
-        	pnButton.add(btntim=new JButton("Tìm"));
+        	//pnButton.add(btntim=new JButton("Tìm"));
         	pnButton.add(Box.createHorizontalStrut(5));
         	pnButton.add(btnxoatrang=new JButton("Xoá trắng"));
+        	pnButton.add(Box.createHorizontalStrut(5));
+        	pnButton.add(btntrolai=new JButton("Trở lại"));
         	pnCenter.add(pnButton);
         	//table
-        	String[] cols = {"Mã trọ","Tên chủ nhà","Địa chỉ","Số điện thoại","Mã nhân viên"};
+        	String[] cols = {"Mã sinh viên","Họ tên","Mã trọ","Tên chủ nhà","Địa chỉ","Số điện thoại"};
     		tablemodel = new DefaultTableModel(cols, 0);
     		table = new JTable(tablemodel);
     		JScrollPane scroll;
@@ -88,17 +99,19 @@ public class GUI_TimTroSinhVien extends JFrame implements ActionListener {
     		pnCenter.add(scroll);
         	pnBorder.add(pnCenter,BorderLayout.CENTER);
         	///
-        	btntim.addActionListener(this);
+        	//btntim.addActionListener(this);
         	btnxoatrang.addActionListener(this);
+        	btnduyet.addActionListener(this);
+        	btntrolai.addActionListener(this);
         	Database.getInstance().connect();
         	updateTable();
         }
         private void updateTable() {
 			// TODO Auto-generated method stub
-        	ArrayList<Tro> list= new DAOChutro().getListTro();
+        	ArrayList<SinhVien> list= new DAOChutro().doctubangJoin();
     		//XoaHetDuLieuTrenTableModel();
-    		for (Tro t : list) {
-    		String[] row= {t.getMatro(),t.getDiachi(),t.getChunha(),t.getSdt(),t.getManv().getMaNV()};
+    		for (SinhVien t : list) {
+    		String[] row= {t.getMssv(),t.getHoten(),t.gettro().getMatro(),t.gettro().getChunha(),t.gettro().getDiachi(),t.gettro().getSdt()};
     		tablemodel.addRow(row);
     		}
     		table.setModel(tablemodel);
@@ -110,66 +123,36 @@ public class GUI_TimTroSinhVien extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Object obj=e.getSource();
-			String timma=txtMa.getText();
-			String timdc=txtDiachi.getText();
-			String timcn=txtchunha.getText();
-			String timsdt=txtSDT.getText();
+//			String timma=txtMa.getText();
+//			String timdc=txtDiachi.getText();
+//			String timcn=txtchunha.getText();
+//			String timsdt=txtSDT.getText();
 			
-			if (obj.equals(btntim)) {
-				if(timma.length()!=0) {
-					if(timtheoma != null) {
-						for(Tro t: timtheoma) {
-							String[] row= {t.getMatro(),t.getDiachi(),t.getChunha(),t.getSdt(),t.getManv().getMaNV()};
-							tablemodel.addRow(row);
-						}
-						table.setModel(tablemodel);
-						
+				if(obj.equals(btnduyet)) {
+				tablemodel.setRowCount(0);
+				String tim = txttukhoa.getText();
+					if(tim.length()==0) {
+					updateTable();
+					}else {
+					List<SinhVien> dssv = dao_chutro.timkiemSv_tro(tim);
+					for(SinhVien sv : dssv) {
+						String[] rowData= {sv.getMssv(),sv.getHoten(),sv.gettro().getMatro(),sv.gettro().getChunha(),sv.gettro().getDiachi(),sv.gettro().getSdt()};
+						tablemodel.addRow(rowData);
 					}
-				} 
-				else if(timdc.length()!=0) {
-					 if(timtheodiachi !=null) {
-						for(Tro t: timtheoma) {
-							String[] row= {t.getMatro(),t.getDiachi(),t.getChunha(),t.getSdt(),t.getManv().getMaNV()};
-							tablemodel.addRow(row);
-						}
-						table.setModel(tablemodel);
-						
-					}
-				 } 
-				 else if(timcn.length()!=0) {
-					 if(timtheochunha != null) {
-						for(Tro t: timtheoma) {
-							String[] row= {t.getMatro(),t.getDiachi(),t.getChunha(),t.getSdt(),t.getManv().getMaNV()};
-							tablemodel.addRow(row);
-						}
-						table.setModel(tablemodel);
-						
-					}
-				 }
-				 else if(timsdt.length()!=0) {
-					 if(timtheosdt !=null) {
-						for(Tro t: timtheoma) {
-							String[] row= {t.getMatro(),t.getDiachi(),t.getChunha(),t.getSdt(),t.getManv().getMaNV()};
-							tablemodel.addRow(row);
-						}
-						table.setModel(tablemodel);
-					}
-				}
-				 else if(timcn.length()==0&&timdc.length()==0&&timma.length()==0&&timsdt.length()==0) {
-					 JOptionPane.showMessageDialog(this, "Bạn chưa nhập liệu!");
-				 }
+					table.setModel(tablemodel);
 			}
+			}else if(obj.equals(btntrolai)) {
+				tablemodel.setRowCount(0);
+				updateTable();
+			}
+				
 			else if(obj.equals(btnxoatrang)) {
 				xoatrang();
 			}
 		}
 		private void xoatrang() {
 			// TODO Auto-generated method stub
-			txtMa.setText("");
-			txtDiachi.setText("");
-			txtchunha.setText("");
-			txtSDT.setText("");
-			txtMa.requestFocus();
+			txttukhoa.setText("");
 		}
 		
 }
