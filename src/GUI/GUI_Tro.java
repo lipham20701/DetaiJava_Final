@@ -53,7 +53,7 @@ public class GUI_Tro extends JFrame implements ActionListener,MouseListener{
 		pnorth.add(lbltitle = new JLabel("THÔNG TIN NHÀ TRỌ"));
 		Font fp = new Font("Arial", Font.BOLD, 30);
 		lbltitle.setFont(fp);
-		lbltitle.setForeground(Color.BLUE);
+		lbltitle.setForeground(Color.decode("#40E0D0"));
 		pnborder.add(pnorth, BorderLayout.NORTH);
 		
 		//center
@@ -216,10 +216,7 @@ public class GUI_Tro extends JFrame implements ActionListener,MouseListener{
 		else if(o.equals(btnsua)) {
 			sua();
 		}
-		else if(o.equals(btnxoa)) {
-			
 		}
-	}
 	
 	
 	private void sua() {
@@ -262,23 +259,6 @@ public class GUI_Tro extends JFrame implements ActionListener,MouseListener{
 		txtmanv.setText("");
 	}
 	
-	
-/*	private void fillForm(int row) throws SQLException {
-		if (row != -1) {
-			String matro =  (String) table.getValueAt(row, 0);
-			Tro s = new Tro(matro);
-			ArrayList<Tro> dsTro = dstro.getListTro();
-			if (dstro.getListTro().contains(s)) {
-				s = dsTro.get(dsTro.indexOf(s));
-				txtmatro.setText(s.getMatro() + "");
-				txtchunha.setText(s.getChunha());
-				txtdiachi.setText(s.getDiachi());
-				txtsdt.setText(s.getSdt() + "");
-				txtmatro.setEditable(false);
-			}
-		}
-	}
-*/
 	
 	public Tro revertTroFromTextfields() {
 		String matro = txtmatro.getText().toString();
@@ -348,8 +328,6 @@ public class GUI_Tro extends JFrame implements ActionListener,MouseListener{
 			}else 
 				return true;
 		}
-	public static void main(String[] args) {
-		new GUI_Tro().setVisible(true);
-	}
+
 
 }
