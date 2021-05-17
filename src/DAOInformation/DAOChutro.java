@@ -14,6 +14,7 @@ import Entity.NhanVien;
 import Entity.SinhVien;
 import Entity.Sinhvien_Tro;
 import Entity.Tro;
+import GUI.GUI_Tro;
 import connectDatabase.Database;
 
 public class DAOChutro {
@@ -36,7 +37,7 @@ public class DAOChutro {
 			return true;
 		} catch (SQLException e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println(e);
 
 		}
 			return false;
@@ -58,7 +59,7 @@ public class DAOChutro {
 			}
 		} catch (SQLException e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println(e);
 		}
 		return dao_tro;
 	}
@@ -106,7 +107,7 @@ public class DAOChutro {
 			n=ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println(e);
 		}
     	  return n>0;
       }
@@ -120,7 +121,7 @@ public class DAOChutro {
 			n=stmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println(e);
 		}
     	  return n>0;
       }
@@ -148,7 +149,7 @@ public class DAOChutro {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e);
 		}
     	  return dssv;
       }
@@ -168,9 +169,10 @@ public class DAOChutro {
   			}
 		} catch (SQLException e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println(e);
 		}
     	  return dao_tro;
       }
+    
 }
 
