@@ -1,8 +1,11 @@
 package GUI;
 
+import java.awt.Color;
+import java.util.Base64.Decoder;
+
 public class Running {
 	public static void main(String[] args) {
-		new GUI_main().setVisible(true);
-		System.out.println("aaaa1");
+		GUIDangnhap login=new GUIDangnhap();
+		login.setVisible(true);
 	}
 }
