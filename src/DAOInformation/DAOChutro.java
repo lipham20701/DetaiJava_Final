@@ -9,7 +9,10 @@ import java.util.ArrayList;
 
 import javax.xml.crypto.Data;
 
+import Entity.Khoa;
 import Entity.NhanVien;
+import Entity.SinhVien;
+import Entity.Sinhvien_Tro;
 import Entity.Tro;
 import connectDatabase.Database;
 
@@ -59,6 +62,35 @@ public class DAOChutro {
 		}
 		return dao_tro;
 	}
+      public ArrayList<SinhVien> doctubangJoin(){
+    	  ArrayList<SinhVien> listsv = new ArrayList<SinhVien>();
+    	  try {
+     		 
+     	Connection conn=Database. getInstance().getConnection();
+     	  String sql="Select * from Sinhvien SV Join NhaTro NT ON SV.Matro = NT.MaTro ";
+     	  Statement stmt = conn.createStatement();
+     	  ResultSet rs= stmt.executeQuery(sql);
+ 			while(rs.next()) {
+ 				String mssv=rs.getString(1);
+				String tensv=rs.getString(2);
+				String gioitinh=rs.getString(3);
+				String lop = rs.getString(4);
+                String quequan=rs.getString(5);
+                String makhoa = rs.getString(6);
+                String matro = rs.getString(7);
+                String diachi = rs.getString(9);
+                String chunha = rs.getString(10);
+                String sdt = rs.getString(11);
+                String manv = rs.getString(12);
+                SinhVien sv = new SinhVien(mssv,tensv,gioitinh,lop,quequan,new Khoa(makhoa), new Tro(matro, chunha, diachi, sdt, new NhanVien(manv)));
+                listsv.add(sv);
+ 			}
+ 		} catch (SQLException e) {
+ 			// TODO: handle exception
+ 			e.printStackTrace();
+ 		}
+ 		return listsv;
+      }
       public boolean update(Tro tro){
     	  Connection conn= Database.getInstance().getConnection();
     	 PreparedStatement ps= null;
@@ -92,39 +124,47 @@ public class DAOChutro {
 		}
     	  return n>0;
       }
-      public ArrayList<Tro> timkiemthongtin(String tim) {
+      public ArrayList<SinhVien> timkiemSv_tro(String tim) {
+    	  ArrayList<SinhVien> dssv = new ArrayList<SinhVien>();
     	  try {
     		Connection conn = Database.getInstance().getConnection();
-    		String sql = "select * from NhaTro n join Sinhvien sv  on sv.Matro=n.MaTro where sv.Mssv = '%"+tim+"%'"+"or ";
+    		String sql = "select * from Sinhvien sv join NhaTro n on sv.Matro=n.MaTro where sv.Mssv like '%"+tim+"%'or sv.Tensv like '%"+tim+"%'or n.Diachi like '%"+tim+"%'or n.SDT like '%"+tim+"%'";
     		Statement stmt = conn.createStatement();
     		ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
-				String matro=rs.getString(1);
-				String diachi=rs.getString(2);
-				String chunha=rs.getString(3);
-                String sdt=rs.getString(4);
-                String manv=rs.getString(5);
-                dao_tro.add(new Tro(matro, chunha, diachi, sdt,new NhanVien(manv)));
+				String mssv=rs.getString(1);
+				String tensv=rs.getString(2);
+				String gioitinh=rs.getString(3);
+				String lop = rs.getString(4);
+                String quequan=rs.getString(5);
+                String makhoa = rs.getString(6);
+                String matro = rs.getString(7);
+                String diachi = rs.getString(9);
+                String chunha = rs.getString(10);
+                String sdt = rs.getString(11);
+                String manv = rs.getString(12);
+                SinhVien sv = new SinhVien(mssv,tensv,gioitinh,lop,quequan,new Khoa(makhoa), new Tro(matro, chunha, diachi, sdt, new NhanVien(manv)));
+                dssv.add(sv);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	  return dao_tro;
+    	  return dssv;
       }
-      public ArrayList<Tro> timkiemtro(String mssv) {
+      public ArrayList<Tro> timkiemtro(String mssv, String diachi, String sodienthoai) {
     	  try {
     		 Connection conn = Database.getInstance().getConnection();
-      		String sql = "Select * from Sinhvien SV Join NhaTro NT ON SV.Matro = NT.MaTro where Mssv = '"+mssv+"'";
+      		String sql = "Select * from Sinhvien SV Join NhaTro NT ON SV.Matro = NT.MaTro where Mssv = '"+mssv+"' and diachi = '"+diachi+"' and SDT = '"+sodienthoai+"'";
       		Statement stmt = conn.createStatement();
       		ResultSet rs = stmt.executeQuery(sql);
   			while(rs.next()) {
-  				String matro=rs.getString(1);
-  				String diachi=rs.getString(2);
-  				String chunha=rs.getString(3);
-                String sdt=rs.getString(4);
-                String manv=rs.getString(5);
-                dao_tro.add(new Tro(matro, chunha, diachi, sdt,new NhanVien(manv)));
+  				String matro=rs.getString(7);
+  				String diachi1=rs.getString(8);
+  				String chunha=rs.getString(9);
+                String sdt=rs.getString(10);
+                String manv=rs.getString(11);
+                dao_tro.add(new Tro(matro, chunha, diachi1, sdt,new NhanVien(manv)));
   			}
 		} catch (SQLException e) {
 			// TODO: handle exception
